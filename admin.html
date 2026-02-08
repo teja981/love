@@ -36,29 +36,17 @@ body{
   box-shadow:0 0 20px rgba(255,0,100,0.4);
 }
 
-h2{
-  margin-bottom:10px;
-}
-
 input,textarea{
   width:100%;
   padding:10px;
   margin:8px 0;
   border:none;
   border-radius:8px;
-  outline:none;
 }
 
 textarea{
-  resize:none;
   height:70px;
-}
-
-label{
-  display:block;
-  margin-top:8px;
-  font-size:14px;
-  text-align:left;
+  resize:none;
 }
 
 button{
@@ -69,25 +57,17 @@ button{
   border-radius:25px;
   cursor:pointer;
   margin-top:15px;
-  font-size:15px;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.05);
-  background:#ff1658;
 }
 
 #out{
   margin-top:15px;
-  word-break:break-all;
   font-size:13px;
+  word-break:break-all;
 }
 
-#out a{
-  color:#fff;
+a{
+  color:white;
   font-weight:bold;
-  text-decoration:underline;
 }
 
 </style>
@@ -105,10 +85,10 @@ button:hover{
 
 <textarea id="msg" placeholder="Your Love Message 💌"></textarea>
 
-<label>📸 Upload Photo</label>
+<label>📸 Photo</label>
 <input type="file" id="photo" accept="image/*">
 
-<label>🎵 Upload Music</label>
+<label>🎵 Music</label>
 <input type="file" id="music" accept="audio/*">
 
 <button onclick="generate()">Generate 💌</button>
@@ -122,15 +102,15 @@ button:hover{
 
 function generate(){
 
-  const name = document.getElementById("name").value.trim();
-  const since = document.getElementById("since").value;
-  const msg = document.getElementById("msg").value.trim();
+  const name = nameInput.value.trim();
+  const since = sinceInput.value;
+  const msg = msgInput.value.trim();
 
-  const photo = document.getElementById("photo").files[0];
-  const music = document.getElementById("music").files[0];
+  const photo = photoInput.files[0];
+  const music = musicInput.files[0];
 
   if(!name || !since || !msg || !photo || !music){
-    alert("Please fill all fields ❤️");
+    alert("Fill all fields ❤️");
     return;
   }
 
@@ -141,26 +121,23 @@ function generate(){
 
     r2.onload = e2 => {
 
-      const photoData = encodeURIComponent(e1.target.result);
-      const musicData = encodeURIComponent(e2.target.result);
-
-      const base =
-        location.origin +
-        location.pathname.replace("admin.html","");
+      // Save in browser
+      localStorage.setItem("love_name", name);
+      localStorage.setItem("love_since", since);
+      localStorage.setItem("love_msg", msg);
+      localStorage.setItem("love_photo", e1.target.result);
+      localStorage.setItem("love_music", e2.target.result);
 
       const link =
-        base +
-        "index.html" +
-        "?name=" + encodeURIComponent(name) +
-        "&since=" + since +
-        "&msg=" + encodeURIComponent(msg) +
-        "&photo=" + photoData +
-        "&music=" + musicData;
+        location.origin +
+        location.pathname.replace("admin.html","") +
+        "index.html";
 
-      document.getElementById("out").innerHTML =
-        `<b>💖 Your Love Link</b><br><br>
-         <a href="${link}" target="_blank">${link}</a><br><br>
-         📲 Copy & share on WhatsApp ❤️`;
+      out.innerHTML = `
+      💖 Your Link<br><br>
+      <a href="${link}" target="_blank">${link}</a><br><br>
+      📲 Share on WhatsApp ❤️
+      `;
 
     };
 
@@ -170,6 +147,15 @@ function generate(){
   r1.readAsDataURL(photo);
 
 }
+
+
+// Shortcuts
+const nameInput = document.getElementById("name");
+const sinceInput = document.getElementById("since");
+const msgInput = document.getElementById("msg");
+const photoInput = document.getElementById("photo");
+const musicInput = document.getElementById("music");
+const out = document.getElementById("out");
 
 </script>
 
