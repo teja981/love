@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <title>Love Generator 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 <style>
-
 body{
 font-family:Poppins;
 background:linear-gradient(135deg,#ff5f8d,#ffb3c6);
@@ -19,13 +17,13 @@ color:white;
 }
 
 .box{
-background:rgba(255,255,255,0.25);
+background:rgba(255,255,255,0.2);
 backdrop-filter:blur(15px);
 padding:30px;
-width:360px;
+width:350px;
 border-radius:20px;
 text-align:center;
-box-shadow:0 0 25px rgba(255,0,100,0.5);
+box-shadow:0 0 20px rgba(255,0,100,0.4);
 }
 
 input,textarea{
@@ -34,7 +32,6 @@ padding:10px;
 margin:8px 0;
 border:none;
 border-radius:8px;
-font-size:14px;
 }
 
 button{
@@ -49,11 +46,10 @@ font-size:15px;
 width:100%;
 }
 
-a{
-color:white;
+#result{
+margin-top:15px;
 word-break:break-all;
 }
-
 </style>
 </head>
 
@@ -63,10 +59,11 @@ word-break:break-all;
 
 <h2>💖 Love Generator</h2>
 
-<input id="name" placeholder="Partner Name ❤️">
+<input id="name" placeholder="Partner Name">
+
 <input id="since" type="date">
 
-<textarea id="msg" placeholder="Your Love Message 💌"></textarea>
+<textarea id="msg" placeholder="Your Love Message"></textarea>
 
 <label>📸 Upload Photo</label>
 <input type="file" id="photo" accept="image/*">
@@ -74,9 +71,9 @@ word-break:break-all;
 <label>🎵 Upload Music</label>
 <input type="file" id="music" accept="audio/*">
 
-<button onclick="generate()">Generate Link 💌</button>
+<button onclick="generate()">Generate 💌</button>
 
-<p id="out"></p>
+<div id="result"></div>
 
 </div>
 
@@ -99,56 +96,39 @@ return;
 const r1 = new FileReader();
 const r2 = new FileReader();
 
-r1.onload = e1 => {
+r1.onload = function(){
 
-r2.onload = e2 => {
+r2.onload = function(){
 
-const p = encodeURIComponent(e1.target.result);
-const m = encodeURIComponent(e2.target.result);
+const data = {
+name,
+since,
+msg,
+photo:r1.result,
+music:r2.result
+};
 
-const n = encodeURIComponent(name);
-const s = encodeURIComponent(since);
-const t = encodeURIComponent(msg);
+localStorage.setItem("loveData",JSON.stringify(data));
 
-const base =
-location.origin +
-location.pathname.replace("admin.html","");
+const link = location.origin + location.pathname.replace("admin.html","index.html");
 
-const link =
-`${base}index.html?name=${n}&since=${s}&msg=${t}&photo=${p}&music=${m}`;
+document.getElementById("result").innerHTML = `
+<p>Share this link ❤️</p>
+<input value="${link}" readonly>
 
-document.getElementById("out").innerHTML = `
-<b>💖 Share this link:</b><br><br>
-<a href="${link}" target="_blank">${link}</a>
 <br><br>
-<button onclick="shareWA('${link}')">💚 Share on WhatsApp</button>
+
+<a href="https://wa.me/?text=${encodeURIComponent(link)}" target="_blank">
+<button>📱 Share WhatsApp</button>
+</a>
 `;
-
-};
-
-r2.readAsDataURL(music);
-
-};
-
-r1.readAsDataURL(photo);
 
 }
 
+r2.readAsDataURL(music);
+}
 
-/* WhatsApp Share */
-
-function shareWA(link){
-
-const text =
-"💖 My Special Love For You ❤️\n\n" +
-"Open this 👉\n" + link;
-
-window.open(
-"https://api.whatsapp.com/send?text=" +
-encodeURIComponent(text),
-"_blank"
-);
-
+r1.readAsDataURL(photo);
 }
 
 </script>
