@@ -1,143 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Love Generator 💖</title>
 
-<title>My Valentine 💖</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Poppins;
-}
-
 body{
-  background:radial-gradient(circle,#3a0000,#120000);
-  color:white;
-  height:100vh;
-  overflow:hidden;
+font-family:Poppins;
+background:linear-gradient(135deg,#ff5f8d,#ffb3c6);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
 }
 
-/* Screens */
-
-.screen{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  text-align:center;
-  padding:20px;
+.box{
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(15px);
+padding:30px;
+width:360px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 25px rgba(255,0,100,0.5);
 }
 
-.active{display:flex;}
-
-/* Titles */
-
-.title{
-  font-family:'Great Vibes';
-  font-size:3rem;
-}
-
-.heart{
-  font-size:70px;
-  animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.2)}
-}
-
-/* Buttons */
-
-.btns{
-  display:flex;
-  gap:20px;
-  margin-top:20px;
+input,textarea{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:none;
+border-radius:8px;
+font-size:14px;
 }
 
 button{
-  padding:12px 25px;
-  border:none;
-  border-radius:25px;
-  cursor:pointer;
-  font-size:15px;
+background:#ff2f68;
+color:white;
+padding:12px 25px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin-top:15px;
+font-size:15px;
+width:100%;
 }
 
-.yes{
-  background:#ff2f68;
-  color:white;
-}
-
-.no{
-  background:#333;
-  color:white;
-}
-
-/* Card */
-
-.card{
-  background:rgba(255,255,255,0.15);
-  padding:25px;
-  border-radius:15px;
-  max-width:450px;
-}
-
-/* Photos */
-
-.photo{
-  width:200px;
-  height:200px;
-  border-radius:15px;
-  object-fit:cover;
-  display:none;
-  margin:15px;
-  border:2px solid hotpink;
-}
-
-/* Final Page */
-
-.final-name{
-  font-family:'Great Vibes';
-  font-size:3.5rem;
-  animation:glow 2s infinite alternate;
-}
-
-@keyframes glow{
-  from{color:#ff9dcf}
-  to{color:#ff2f68}
-}
-
-.slideshow{
-  width:220px;
-  height:220px;
-  border-radius:15px;
-  overflow:hidden;
-  border:2px solid hotpink;
-  margin:15px;
-}
-
-.slideshow img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.forever{
-  background:rgba(0,0,0,0.5);
-  padding:10px 20px;
-  border-radius:20px;
-  margin:10px;
+a{
+color:white;
+word-break:break-all;
 }
 
 </style>
@@ -145,217 +59,96 @@ button{
 
 <body>
 
-<audio id="music" loop></audio>
+<div class="box">
 
-<!-- PAGE 1 -->
+<h2>💖 Love Generator</h2>
 
-<div class="screen active" id="s1">
+<input id="name" placeholder="Partner Name ❤️">
+<input id="since" type="date">
 
-  <div class="heart">❤️</div>
+<textarea id="msg" placeholder="Your Love Message 💌"></textarea>
 
-  <div class="title">Will You Be My Valentine?</div>
+<label>📸 Upload Photo</label>
+<input type="file" id="photo" accept="image/*">
 
-  <h3 id="n1"></h3>
+<label>🎵 Upload Music</label>
+<input type="file" id="music" accept="audio/*">
 
-  <div class="btns">
-    <button class="yes" onclick="next(2)">YES 💖</button>
-    <button class="no" onclick="move(this)">NO 😜</button>
-  </div>
+<button onclick="generate()">Generate Link 💌</button>
 
-</div>
-
-<!-- PAGE 2 -->
-
-<div class="screen" id="s2">
-
-  <div class="heart">💖</div>
-
-  <div class="title">I Love You</div>
-
-  <h3 id="n2"></h3>
-
-  <div id="count"></div>
-
-  <button class="yes" onclick="next(3)">Open 💌</button>
+<p id="out"></p>
 
 </div>
-
-<!-- PAGE 3 -->
-
-<div class="screen" id="s3">
-
-  <div class="heart">💘</div>
-
-  <div class="title">My Heart</div>
-
-  <div class="card">
-    <p id="msg"></p>
-  </div>
-
-  <img id="p1" class="photo">
-
-  <button class="yes" onclick="next(4)">Proposal 💍</button>
-
-</div>
-
-<!-- PAGE 4 -->
-
-<div class="screen" id="s4">
-
-  <div class="heart">💍</div>
-
-  <div class="title">Will You Marry Me?</div>
-
-  <img id="p2" class="photo">
-
-  <button class="yes" onclick="next(5)">YES 💖</button>
-
-</div>
-
-<!-- PAGE 5 -->
-
-<div class="screen" id="s5">
-
-  <h1 id="finalName" class="final-name"></h1>
-
-  <div class="heart">💖💍💖</div>
-
-  <h2>Thank You For Accepting Me ❤️</h2>
-
-  <div class="slideshow">
-    <img id="slide">
-  </div>
-
-  <div class="forever" id="forever"></div>
-
-</div>
-
 
 <script>
 
-/* GET DATA */
+function generate(){
 
-const p = new URLSearchParams(location.search);
+const name = document.getElementById("name").value.trim();
+const since = document.getElementById("since").value;
+const msg = document.getElementById("msg").value.trim();
 
-const name = p.get("name") || "My Love";
-const since = p.get("since") || "2024-01-01";
-const msg = decodeURIComponent(p.get("msg") || "I Love You ❤️");
+const photo = document.getElementById("photo").files[0];
+const music = document.getElementById("music").files[0];
 
-const photo = decodeURIComponent(p.get("photo") || "");
-const music = decodeURIComponent(p.get("music") || "");
-
-
-/* SET DATA */
-
-n1.innerText = name + " ❤️";
-n2.innerText = name + " ❤️";
-
-document.getElementById("msg").innerText = msg;
-
-if(photo){
-  p1.src = photo;
-  p2.src = photo;
-  p1.style.display="block";
-  p2.style.display="block";
+if(!name || !since || !msg || !photo || !music){
+alert("Fill all fields ❤️");
+return;
 }
 
-if(music){
-  document.getElementById("music").src = music;
-}
+const r1 = new FileReader();
+const r2 = new FileReader();
 
+r1.onload = e1 => {
 
-/* MUSIC AUTOPLAY */
+r2.onload = e2 => {
 
-document.body.addEventListener("click",()=>{
-  document.getElementById("music").play().catch(()=>{});
-},{once:true});
+const p = encodeURIComponent(e1.target.result);
+const m = encodeURIComponent(e2.target.result);
 
+const n = encodeURIComponent(name);
+const s = encodeURIComponent(since);
+const t = encodeURIComponent(msg);
 
-/* COUNTER */
+const base =
+location.origin +
+location.pathname.replace("admin.html","");
 
-const start = new Date(since);
+const link =
+`${base}index.html?name=${n}&since=${s}&msg=${t}&photo=${p}&music=${m}`;
 
-function count(){
+document.getElementById("out").innerHTML = `
+<b>💖 Share this link:</b><br><br>
+<a href="${link}" target="_blank">${link}</a>
+<br><br>
+<button onclick="shareWA('${link}')">💚 Share on WhatsApp</button>
+`;
 
-  const now = new Date();
+};
 
-  const d = Math.floor((now-start)/86400000);
+r2.readAsDataURL(music);
 
-  document.getElementById("count").innerText =
-  "Together "+d+" Days ❤️";
-}
+};
 
-count();
-setInterval(count,60000);
+r1.readAsDataURL(photo);
 
-
-/* NAVIGATION */
-
-function next(n){
-
-  document.querySelectorAll(".screen")
-  .forEach(s=>s.classList.remove("active"));
-
-  document.getElementById("s"+n).classList.add("active");
-
-  if(n===5) startFinal();
 }
 
 
-/* NO BUTTON */
+/* WhatsApp Share */
 
-function move(b){
+function shareWA(link){
 
-  b.style.position="absolute";
+const text =
+"💖 My Special Love For You ❤️\n\n" +
+"Open this 👉\n" + link;
 
-  b.style.left=Math.random()*80+"vw";
-  b.style.top=Math.random()*80+"vh";
-}
+window.open(
+"https://api.whatsapp.com/send?text=" +
+encodeURIComponent(text),
+"_blank"
+);
 
-
-/* FINAL */
-
-function startFinal(){
-
-  finalName.innerText = "💖 "+name+" 💖";
-
-  slide.src = photo;
-
-  setInterval(()=>{
-
-    slide.style.opacity=0;
-
-    setTimeout(()=>{
-      slide.style.opacity=1;
-    },500);
-
-  },3000);
-
-  updateForever();
-
-  setInterval(updateForever,1000);
-}
-
-
-/* FOREVER */
-
-function updateForever(){
-
-  const now = new Date();
-
-  let d = Math.floor((now-start)/1000);
-
-  let days = Math.floor(d/86400);
-  d%=86400;
-
-  let h = Math.floor(d/3600);
-  d%=3600;
-
-  let m = Math.floor(d/60);
-  let s = d%60;
-
-  forever.innerText =
-  `${days} Days ${h}h ${m}m ${s}s Together ❤️`;
 }
 
 </script>
