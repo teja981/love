@@ -43,12 +43,6 @@ border-radius:25px;
 cursor:pointer;
 margin-top:15px;
 font-size:15px;
-width:100%;
-}
-
-#result{
-margin-top:15px;
-word-break:break-all;
 }
 </style>
 </head>
@@ -60,9 +54,7 @@ word-break:break-all;
 <h2>💖 Love Generator</h2>
 
 <input id="name" placeholder="Partner Name">
-
 <input id="since" type="date">
-
 <textarea id="msg" placeholder="Your Love Message"></textarea>
 
 <label>📸 Upload Photo</label>
@@ -73,7 +65,7 @@ word-break:break-all;
 
 <button onclick="generate()">Generate 💌</button>
 
-<div id="result"></div>
+<p id="out"></p>
 
 </div>
 
@@ -81,12 +73,12 @@ word-break:break-all;
 
 function generate(){
 
-const name = document.getElementById("name").value.trim();
-const since = document.getElementById("since").value;
-const msg = document.getElementById("msg").value.trim();
+let name = nameInput.value.trim();
+let since = sinceInput.value;
+let msg = msgInput.value.trim();
 
-const photo = document.getElementById("photo").files[0];
-const music = document.getElementById("music").files[0];
+let photo = photoInput.files[0];
+let music = musicInput.files[0];
 
 if(!name || !since || !msg || !photo || !music){
 alert("Fill all fields ❤️");
@@ -96,40 +88,41 @@ return;
 const r1 = new FileReader();
 const r2 = new FileReader();
 
-r1.onload = function(){
+r1.onload = e1 => {
 
-r2.onload = function(){
+r2.onload = e2 => {
 
-const data = {
-name,
-since,
-msg,
-photo:r1.result,
-music:r2.result
-};
+localStorage.setItem("love_photo", e1.target.result);
+localStorage.setItem("love_music", e2.target.result);
 
-localStorage.setItem("loveData",JSON.stringify(data));
+const link =
+location.origin +
+location.pathname.replace("admin.html","") +
+"index.html" +
+"?name="+encodeURIComponent(name)+
+"&since="+since+
+"&msg="+encodeURIComponent(msg);
 
-const link = location.origin + location.pathname.replace("admin.html","index.html");
-
-document.getElementById("result").innerHTML = `
-<p>Share this link ❤️</p>
-<input value="${link}" readonly>
-
-<br><br>
-
-<a href="https://wa.me/?text=${encodeURIComponent(link)}" target="_blank">
-<button>📱 Share WhatsApp</button>
-</a>
+out.innerHTML = `
+<b>Share this link 💖</b><br>
+<a href="${link}" target="_blank">${link}</a>
 `;
 
-}
+};
 
 r2.readAsDataURL(music);
-}
+
+};
 
 r1.readAsDataURL(photo);
+
 }
+
+const nameInput=document.getElementById("name");
+const sinceInput=document.getElementById("since");
+const msgInput=document.getElementById("msg");
+const photoInput=document.getElementById("photo");
+const musicInput=document.getElementById("music");
 
 </script>
 
