@@ -556,6 +556,28 @@ waBtn.onclick=()=>{
   );
 };
 
+<script>
+
+const name = localStorage.getItem("love_name");
+const since = localStorage.getItem("love_since");
+const msg = localStorage.getItem("love_msg");
+const photo = localStorage.getItem("love_photo");
+const music = localStorage.getItem("love_music");
+
+if(!name){
+  alert("Open from generated link ❤️");
+  location.href="admin.html";
+}
+
+// Example usage
+document.getElementById("showName").innerText = name;
+document.getElementById("showMsg").innerText = msg;
+document.getElementById("showImg").src = photo;
+
+const audio = document.getElementById("bgMusic");
+audio.src = music;
+audio.play();
+
 </script>
 
 </body>
