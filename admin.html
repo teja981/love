@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Love Generator 💖</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
+
+body{
+background:linear-gradient(135deg,#ff2f68,#ff9dbb);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+.box{
+background:rgba(255,255,255,0.25);
+backdrop-filter:blur(18px);
+padding:30px;
+width:360px;
+border-radius:22px;
+text-align:center;
+box-shadow:0 0 25px rgba(255,0,100,0.5);
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin:8px 0;
+border:none;
+border-radius:10px;
+font-size:14px;
+outline:none;
+}
+
+textarea{
+resize:none;
+height:70px;
+}
+
+label{
+display:block;
+text-align:left;
+margin-top:10px;
+font-size:14px;
+}
+
+button{
+background:#ff2f68;
+color:white;
+padding:12px 25px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin-top:15px;
+font-size:15px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+#out{
+margin-top:15px;
+word-break:break-all;
+font-size:13px;
+}
+
+.wa{
+background:#25D366;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>💖 Love Generator</h2>
+
+<input id="name" placeholder="Partner Name ❤️">
+
+<input id="since" type="date">
+
+<textarea id="msg" placeholder="Your Love Message 💌"></textarea>
+
+<label>📸 Upload Photo</label>
+<input type="file" id="photo" accept="image/*">
+
+<label>🎵 Upload Music</label>
+<input type="file" id="music" accept="audio/*">
+
+<button onclick="generate()">Generate 💌</button>
+
+<button class="wa" id="waBtn" style="display:none">
+💚 Share on WhatsApp
+</button>
+
+<div id="out"></div>
+
+</div>
+
+<script>
+
+function generate(){
+
+const name = document.getElementById("name").value.trim();
+const since = document.getElementById("since").value;
+const msg = document.getElementById("msg").value.trim();
+
+const photo = document.getElementById("photo").files[0];
+const music = document.getElementById("music").files[0];
+
+if(!name || !since || !msg || !photo || !music){
+alert("Fill all fields ❤️");
+return;
+}
+
+const r1 = new FileReader();
+const r2 = new FileReader();
+
+r1.onload = e1 => {
+
+r2.onload = e2 => {
+
+const p = encodeURIComponent(e1.target.result);
+const m = encodeURIComponent(e2.target.result);
+
+const n = encodeURIComponent(name);
+const s = encodeURIComponent(since);
+const t = encodeURIComponent(msg);
+
+
+/* Build URL */
+
+let base = location.href.replace("admin.html","");
+
+let link =
+base + "index.html" +
+"?name=" + n +
+"&since=" + s +
+"&msg=" + t +
+"&photo=" + p +
+"&music=" + m;
+
+
+/* Show */
+
+out.innerHTML = `
+<b>🔗 Your Love Link</b><br>
+<a href="${link}" target="_blank">${link}</a>
+`;
+
+
+/* WhatsApp */
+
+const wa =
+"https://api.whatsapp.com/send?text=" +
+encodeURIComponent("💖 My Valentine ❤️\n\n"+link);
+
+waBtn.style.display="block";
+
+waBtn.onclick = ()=>{
+window.open(wa,"_blank");
+};
+
+};
+
+r2.readAsDataURL(music);
+
+};
+
+r1.readAsDataURL(photo);
+
+}
+
+</script>
+
+</body>
+</html>
