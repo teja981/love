@@ -4,21 +4,13 @@
 <meta charset="UTF-8">
 <title>Love Generator 💖</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-}
-
 body{
-background:linear-gradient(135deg,#ff2f68,#ff9dbb);
+font-family:Poppins;
+background:linear-gradient(135deg,#ff5f8d,#ffb3c6);
 height:100vh;
 display:flex;
 justify-content:center;
@@ -28,33 +20,20 @@ color:white;
 
 .box{
 background:rgba(255,255,255,0.25);
-backdrop-filter:blur(18px);
+backdrop-filter:blur(15px);
 padding:30px;
 width:360px;
-border-radius:22px;
+border-radius:20px;
 text-align:center;
 box-shadow:0 0 25px rgba(255,0,100,0.5);
 }
 
 input,textarea{
 width:100%;
-padding:12px;
+padding:10px;
 margin:8px 0;
 border:none;
-border-radius:10px;
-font-size:14px;
-outline:none;
-}
-
-textarea{
-resize:none;
-height:70px;
-}
-
-label{
-display:block;
-text-align:left;
-margin-top:10px;
+border-radius:8px;
 font-size:14px;
 }
 
@@ -67,22 +46,12 @@ border-radius:25px;
 cursor:pointer;
 margin-top:15px;
 font-size:15px;
-transition:0.3s;
+width:100%;
 }
 
-button:hover{
-transform:scale(1.05);
-}
-
-#out{
-margin-top:15px;
+a{
+color:white;
 word-break:break-all;
-font-size:13px;
-}
-
-.wa{
-background:#25D366;
-margin-top:10px;
 }
 
 </style>
@@ -95,7 +64,6 @@ margin-top:10px;
 <h2>💖 Love Generator</h2>
 
 <input id="name" placeholder="Partner Name ❤️">
-
 <input id="since" type="date">
 
 <textarea id="msg" placeholder="Your Love Message 💌"></textarea>
@@ -106,13 +74,9 @@ margin-top:10px;
 <label>🎵 Upload Music</label>
 <input type="file" id="music" accept="audio/*">
 
-<button onclick="generate()">Generate 💌</button>
+<button onclick="generate()">Generate Link 💌</button>
 
-<button class="wa" id="waBtn" style="display:none">
-💚 Share on WhatsApp
-</button>
-
-<div id="out"></div>
+<p id="out"></p>
 
 </div>
 
@@ -146,39 +110,19 @@ const n = encodeURIComponent(name);
 const s = encodeURIComponent(since);
 const t = encodeURIComponent(msg);
 
+const base =
+location.origin +
+location.pathname.replace("admin.html","");
 
-/* Build URL */
+const link =
+`${base}index.html?name=${n}&since=${s}&msg=${t}&photo=${p}&music=${m}`;
 
-let base = location.href.replace("admin.html","");
-
-let link =
-base + "index.html" +
-"?name=" + n +
-"&since=" + s +
-"&msg=" + t +
-"&photo=" + p +
-"&music=" + m;
-
-
-/* Show */
-
-out.innerHTML = `
-<b>🔗 Your Love Link</b><br>
+document.getElementById("out").innerHTML = `
+<b>💖 Share this link:</b><br><br>
 <a href="${link}" target="_blank">${link}</a>
+<br><br>
+<button onclick="shareWA('${link}')">💚 Share on WhatsApp</button>
 `;
-
-
-/* WhatsApp */
-
-const wa =
-"https://api.whatsapp.com/send?text=" +
-encodeURIComponent("💖 My Valentine ❤️\n\n"+link);
-
-waBtn.style.display="block";
-
-waBtn.onclick = ()=>{
-window.open(wa,"_blank");
-};
 
 };
 
@@ -187,6 +131,23 @@ r2.readAsDataURL(music);
 };
 
 r1.readAsDataURL(photo);
+
+}
+
+
+/* WhatsApp Share */
+
+function shareWA(link){
+
+const text =
+"💖 My Special Love For You ❤️\n\n" +
+"Open this 👉\n" + link;
+
+window.open(
+"https://api.whatsapp.com/send?text=" +
+encodeURIComponent(text),
+"_blank"
+);
 
 }
 
